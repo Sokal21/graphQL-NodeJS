@@ -27,16 +27,20 @@ const resolvers = {
       return fromJS(link)
     },
     updateLink: (root, args) => {
-      links = links.updateIn(
-        (link) => link.get('id') === args.id,
-        (link) => link.merge({
-            url: args.url,
-            description: args.description
-          }
+      const linkIndex = links.findIndex((link) => link.get('id') === args.id)
+      let modifiedLink
+      if(linkIndex >= 0) {
+        links = links.update(
+          linkIndex,
+          (link) => link.merge({
+              url: args.url,
+              description: args.description
+            }
+          )
         )
-      )
-      const foundedLink = links.find((link) => link.get('id') === args.id)
-      return foundedLink
+        modifiedLink = links.get(linkIndex)
+      }
+      return modifiedLink
     },
     deleteLink: (root, args) => {
       const linkIndex = links.findIndex((link) => link.get('id') === args.id)
