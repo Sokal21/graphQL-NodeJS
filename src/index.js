@@ -18,13 +18,13 @@ const resolvers = {
   },
   Mutation: {
     post: (root, args) => {
-      const link = {
+      const link = fromJS({
         id: `link-${links.size + 1}`,
         description: args.description,
         url: args.url
-      }
-      links = links.push(fromJS(link))
-      return fromJS(link)
+      });
+      links = links.push(link)
+      return link
     },
     updateLink: (root, args) => {
       const linkIndex = links.findIndex((link) => link.get('id') === args.id)
